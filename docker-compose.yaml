@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mysql:latest
+    container_name: supermarket_db
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: supermarket
+      MYSQL_USER: mahmoud
+      MYSQL_PASSWORD: "1234"
+    command: --local-infile=1 --secure-file-priv=""
+    volumes:
+        - ./db_container/create_tables.sql:/docker-entrypoint-initdb.d/init-db.sql
+        - ./insert.sh:/docker-entrypoint-initdb.d/insert-data.sh
+        - ./db_container/customers:/docker-entrypoint-initdb.d/customers.csv
+
+          # command: [ "bash", "-c", "chmod +x /docker-entrypoint-initdb.d/insert-data.sh && /docker-entrypoint-initdb.d/insert-data.sh" ]
+
+volumes:
+  db_data:
+
